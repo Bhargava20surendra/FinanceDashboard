@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>FinLedger — Finance Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
+</head>
+<body>
+
+<!-- LOGIN / SIGNUP SCREEN -->
+<div id="login-screen" class="screen active">
+  <div class="login-bg">
+    <div class="login-grid"></div>
+  </div>
+  <div class="login-box">
+    <div class="login-logo">
+      <span class="logo-mark">◈</span>
+      <span class="logo-text">FinLedger</span>
+    </div>
+    <p class="login-sub">Institutional Finance Dashboard</p>
+
+    <!-- TABS -->
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tab-login" onclick="switchTab('login')">Sign In</button>
+      <button class="auth-tab" id="tab-signup" onclick="switchTab('signup')">Create Account</button>
+    </div>
+
+    <!-- LOGIN FORM -->
+    <div id="login-form">
+      <div id="login-error" class="alert alert-error hidden"></div>
+      <div class="field-group">
+        <label>Username</label>
+        <input type="text" id="login-username" placeholder="Enter username" autocomplete="username"/>
+      </div>
+      <div class="field-group">
+        <label>Password</label>
+        <input type="password" id="login-password" placeholder="Enter password" autocomplete="current-password"/>
+      </div>
+      <button class="btn-primary full" id="login-btn">Sign In →</button>
+
+    </div>
+
+    <!-- SIGNUP FORM -->
+    <div id="signup-form" class="hidden">
+      <div id="signup-error" class="alert alert-error hidden"></div>
+      <div id="signup-success" class="alert alert-success hidden"></div>
+      <div class="field-group">
+        <label>Full Name / Username</label>
+        <input type="text" id="signup-username" placeholder="e.g. john_doe" autocomplete="username"/>
+      </div>
+      <div class="field-group">
+        <label>Email Address</label>
+        <input type="email" id="signup-email" placeholder="you@example.com" autocomplete="email"/>
+      </div>
+      <div class="field-group">
+        <label>Password</label>
+        <input type="password" id="signup-password" placeholder="Min. 6 characters" autocomplete="new-password"/>
+      </div>
+      <div class="field-group">
+        <label>Select Role</label>
+        <select id="signup-role">
+          <option value="">— Choose your role —</option>
+          <option value="viewer">👁 Viewer — View dashboard &amp; records only</option>
+          <option value="analyst">📊 Analyst — View + create &amp; edit records</option>
+          <option value="admin">⚙ Admin — Full access including user management</option>
+        </select>
+        <div class="role-hint" id="role-hint"></div>
+      </div>
+      <button class="btn-primary full" id="signup-btn" >Create Account →</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="app-screen" class="screen">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span class="logo-mark">◈</span>
+      <span class="logo-text">FinLedger</span>
+    </div>
+    <nav class="nav">
+      <a class="nav-item active" data-page="dashboard" onclick="navigate('dashboard')">
+        <span class="nav-icon">▦</span> Dashboard
+      </a>
+      <a class="nav-item" data-page="records" onclick="navigate('records')">
+        <span class="nav-icon">≡</span> Records
+      </a>
+      <a class="nav-item analyst-admin" data-page="analytics" onclick="navigate('analytics')">
+        <span class="nav-icon">⟁</span> Analytics
+      </a>
+      <a class="nav-item admin-only" data-page="users" onclick="navigate('users')">
+        <span class="nav-icon">⊙</span> Users
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-chip">
+        <div class="user-avatar" id="user-avatar">A</div>
+        <div>
+          <div class="user-name" id="sidebar-username">—</div>
+          <div class="user-role" id="sidebar-role">—</div>
+        </div>
+      </div>
+      <button class="btn-ghost logout-btn" onclick="logout()">Sign out</button>
+    </div>
+  </aside>
+
+  <main class="main-content">
+
+    <!-- DASHBOARD PAGE -->
+    <div id="page-dashboard" class="page active">
+      <div class="page-header">
+        <h1 class="page-title">Overview</h1>
+        <span class="page-date" id="today-date"></span>
+      </div>
+      <div class="kpi-row">
+        <div class="kpi-card income">
+          <div class="kpi-label">Total Income</div>
+          <div class="kpi-value" id="kpi-income">—</div>
+          <div class="kpi-bar income-bar"></div>
+        </div>
+        <div class="kpi-card expense">
+          <div class="kpi-label">Total Expenses</div>
+          <div class="kpi-value" id="kpi-expense">—</div>
+          <div class="kpi-bar expense-bar"></div>
+        </div>
+        <div class="kpi-card balance">
+          <div class="kpi-label">Net Balance</div>
+          <div class="kpi-value" id="kpi-balance">—</div>
+          <div class="kpi-bar balance-bar"></div>
+        </div>
+      </div>
+      <div class="charts-row">
+        <div class="chart-card wide">
+          <div class="chart-title">Monthly Trends</div>
+          <div class="chart-wrap" id="monthly-chart"></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">Category Breakdown</div>
+          <div id="category-chart"></div>
+        </div>
+      </div>
+      <div class="section-title">Recent Activity</div>
+      <table class="data-table">
+        <thead><tr><th>Date</th><th>Category</th><th>Type</th><th>Amount</th><th>Notes</th></tr></thead>
+        <tbody id="recent-table"></tbody>
+      </table>
+    </div>
+
+    <!-- RECORDS PAGE -->
+    <div id="page-records" class="page">
+      <div class="page-header">
+        <h1 class="page-title">Financial Records</h1>
+        <button class="btn-primary" id="add-record-btn" onclick="openAddRecord()">+ Add Record</button>
+      </div>
+      <div class="filter-bar">
+        <select id="filter-type" onchange="loadRecords()">
+          <option value="">All Types</option>
+          <option value="income">Income</option>
+          <option value="expense">Expense</option>
+        </select>
+        <select id="filter-category" onchange="loadRecords()">
+          <option value="">All Categories</option>
+          <option>salary</option><option>freelance</option><option>investment</option>
+          <option>rent</option><option>food</option><option>utilities</option>
+          <option>transport</option><option>healthcare</option><option>entertainment</option><option>other</option>
+        </select>
+        <input type="date" id="filter-from" onchange="loadRecords()" placeholder="From"/>
+        <input type="date" id="filter-to" onchange="loadRecords()" placeholder="To"/>
+        <button class="btn-ghost" onclick="clearFilters()">Clear</button>
+      </div>
+      <table class="data-table">
+        <thead><tr><th>Date</th><th>Category</th><th>Type</th><th>Amount</th><th>Notes</th><th class="analyst-admin">Actions</th></tr></thead>
+        <tbody id="records-table"></tbody>
+      </table>
+      <div class="pagination" id="records-pagination"></div>
+    </div>
+
+    <!-- ANALYTICS PAGE -->
+    <div id="page-analytics" class="page">
+      <div class="page-header">
+        <h1 class="page-title">Analytics</h1>
+      </div>
+      <div class="charts-row">
+        <div class="chart-card wide">
+          <div class="chart-title">Weekly Cash Flow</div>
+          <div id="weekly-chart"></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">Income vs Expense by Category</div>
+          <div id="category-compare"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- USERS PAGE -->
+    <div id="page-users" class="page">
+      <div class="page-header">
+        <h1 class="page-title">User Management</h1>
+        <button class="btn-primary" onclick="openAddUser()">+ Add User</button>
+      </div>
+      <table class="data-table">
+        <thead><tr><th>Username</th><th>Email</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody id="users-table"></tbody>
+      </table>
+    </div>
+
+  </main>
+</div>
+
+<!-- MODALS -->
+<div id="modal-overlay" class="modal-overlay hidden" onclick="closeModal()">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <h2 id="modal-title">Modal</h2>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
