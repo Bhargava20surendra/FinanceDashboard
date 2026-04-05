@@ -18,16 +18,6 @@ python app.py
 
 ---
 
-## Demo Accounts
-
-| Username  | Password     | Role     | Permissions                        |
-|-----------|-------------|----------|------------------------------------|
-| admin     | admin123    | Admin    | Full access — CRUD records + users |
-| analyst   | analyst123  | Analyst  | View + create/edit records         |
-| viewer    | viewer123   | Viewer   | View-only                          |
-
----
-
 ## Project Structure
 
 ```
@@ -107,10 +97,4 @@ finance_dashboard/
 
 ---
 
-## Security Notes (Production Checklist)
-- Replace `SECRET_KEY` with a secure random value from environment variables
-- Use HTTPS in production
-- Add CSRF protection (Flask-WTF)
-- Rate limiting on auth endpoints
-- Use PostgreSQL with connection pooling
-- Add JWT/OAuth2 instead of session auth for API clients
+
