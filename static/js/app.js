@@ -538,10 +538,18 @@ function closeModal() {
 async function apiFetch(url) {
   try {
     const res = await fetch(url);
-    if (res.status === 401) { logout(); return null; }
-    if (!res.ok) return null;
-    return await res.json();
-  } catch (e) { return null; }
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.error || "Something went wrong");  // ✅ ADD THIS
+      return null;
+    }
+
+    return data;
+  } catch (e) {
+    alert("Network error");
+    return null;
+  }
 }
 
 function fmt(num) {
