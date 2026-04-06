@@ -2,7 +2,7 @@
 let currentUser = null;
 let currentPage = 1;
 let totalPages = 1;
-
+const BASE_URL = "https://finance-app-backend.onrender.com";
 const ROLE_HINTS = {
   viewer: '👁 Read-only access — view dashboard, records, and summaries.',
   analyst: '📊 Can view everything and create or edit financial records.',
@@ -85,7 +85,7 @@ async function signup() {
   btn.disabled = true;
   btn.textContent = 'Creating account…';
 
-  const res = await fetch('/api/auth/register', {
+  const res = await fetch(`${BASE_URL}/api/auth/register`, {
     method: 'POST', headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, email, password, role })
   });
