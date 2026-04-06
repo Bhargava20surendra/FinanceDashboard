@@ -3,7 +3,7 @@
 A full-stack finance dashboard built with **Flask + SQLite + HTML/CSS/JS** featuring role-based access control, financial record management, and analytics.
 
 ---
-
+#cd "C:\Users\chbs9\Downloads\finance_dashboard (1)\finance_dashboard"
 ## Quick Start
 
 ```bash

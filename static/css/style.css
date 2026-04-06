@@ -445,3 +445,44 @@ th:last-child, td:last-child { text-align: right; }
   text-align: center; padding: 40px; color: var(--text3); font-size: 13px;
 }
 .empty-state .empty-icon { font-size: 28px; margin-bottom: 10px; }
+
+
+.app-footer {
+  position: fixed;
+  bottom: 0;
+  left: 240px; /* adjust based on sidebar width */
+  right: 0;
+  height: 60px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 0 20px;
+
+  background:  #16191d; /* ✅ pure black */
+  color: #e5e7eb; /* light text */
+
+  border-top: 1px solid rgba(255,255,255,0.1);
+
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+
+  z-index: 1000;
+}
+
+.footer-brand {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.footer-tag {
+  color: #9ca3af;
+}
+
+.footer-divider {
+  color: #6b7280;
+}
+.main-content {
+  padding-bottom: 80px; /* must be > footer height */
+}
