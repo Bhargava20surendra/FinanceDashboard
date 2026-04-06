@@ -2,7 +2,7 @@
 let currentUser = null;
 let currentPage = 1;
 let totalPages = 1;
-const BASE_URL = "https://finance-app-backend.onrender.com";
+const BASE_URL = "https://sreehado13.pythonanywhere.com";
 const ROLE_HINTS = {
   viewer: '👁 Read-only access — view dashboard, records, and summaries.',
   analyst: '📊 Can view everything and create or edit financial records.',
@@ -538,7 +538,7 @@ function closeModal() {
 /* ─── UTILS ─── */
 async function apiFetch(url) {
   try {
-    const res = await fetch(url);
+    const res = await fetch(`${BASE_URL}${url}`);
     const data = await res.json();
 
     if (!res.ok) {

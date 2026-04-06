@@ -4,8 +4,10 @@ from routes.auth import auth_bp, register, login
 from routes.users import users_bp
 from routes.records import records_bp
 from routes.dashboard import dashboard_bp
-
+from flask_cors import CORS
 app = Flask(__name__)
+CORS(app, resources={r"/api/*": {"origins": "*"}})
+
 app.config['SECRET_KEY'] = 'finance-dashboard-secret-key-2024'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///finance.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -37,7 +39,7 @@ def index(path):
     if path.startswith('api/'):
         return {"error": "Not Found"}, 404
     return render_template('index.html')
-if __name__ == '__main__':
+if __name__ == "__main__":
     with app.app_context():
         db.create_all()
         from seed import seed_data
