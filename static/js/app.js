@@ -40,7 +40,7 @@ function updateRoleHint() {
 
 async function checkAuth() {
   try {
-    const res = await fetch('/api/auth/me');
+    const res = await fetch(`${BASE_URL}/api/auth/me`);
     if (res.ok) {
       const data = await res.json();
       setUser(data.user);
@@ -57,7 +57,7 @@ async function login() {
 
   if (!username || !password) { showError(errEl, 'Please enter username and password'); return; }
 
-  const res = await fetch('/api/auth/login', {
+  const res = await fetch(`${BASE_URL}/api/auth/login`, {
     method: 'POST', headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, password })
   });
@@ -87,6 +87,7 @@ async function signup() {
 
   const res = await fetch(`${BASE_URL}/api/auth/register`, {
     method: 'POST', headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
     body: JSON.stringify({ username, email, password, role })
   });
   const data = await res.json();
@@ -100,7 +101,7 @@ async function signup() {
 }
 
 async function logout() {
-  await fetch('/api/auth/logout', { method: 'POST' });
+  await fetch(`${BASE_URL}/api/auth/logout`, { method: 'POST' });
   currentUser = null;
   document.body.className = '';
   document.getElementById('login-screen').classList.add('active');
