@@ -447,6 +447,10 @@ th:last-child, td:last-child { text-align: right; }
 .empty-state .empty-icon { font-size: 28px; margin-bottom: 10px; }
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 1d21e60578b27ff8d82b23401e2ae1b1f6f17ed6
 .app-footer {
   position: fixed;
   bottom: 0;
@@ -485,4 +489,8 @@ th:last-child, td:last-child { text-align: right; }
 }
 .main-content {
   padding-bottom: 80px; /* must be > footer height */
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 1d21e60578b27ff8d82b23401e2ae1b1f6f17ed6
